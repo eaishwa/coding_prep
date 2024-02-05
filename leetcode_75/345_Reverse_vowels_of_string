@@ -1,0 +1,71 @@
+"""
+34. Reverse Vowels of String
+https://leetcode.com/problems/reverse-vowels-of-a-string/?envType=study-plan-v2&envId=leetcode-75
+
+What is the question?
+Given a string s, reverse only all the vowels in the string and return it.
+
+Final algorithm followed:
+1. Use a 2 ptr approach, assign a ptr to the first and last letters of the string.
+2. While p1 < p2, do the following -
+    a. if both ptrs are pointing to vowels, swap them
+    b. if both are not pointing to vowels, move p1 right and p2 left
+    c. if one of them is a vowel, move the other ptr in its proper direction
+3. Return the string
+Time Complexity: O(n), Space Complexity: O(1)
+"""
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        vowels = {'a','A','e','E','i','I','o','O','u','U'}
+        p1, p2 = 0, len(s)-1
+        s = list(s)
+        while p1 < p2:
+            if s[p1] in vowels and s[p2] in vowels:
+                tmp = s[p1]
+                s[p1] = s[p2]
+                s[p2] = tmp
+                p1 += 1
+                p2 -= 1
+            elif s[p1] not in vowels and s[p2] not in vowels:
+                p1 += 1
+                p2 -= 1
+            elif s[p1] in vowels or s[p2] in vowels:
+                if s[p1] in vowels:
+                    p2 -= 1
+                else:
+                    p1 += 1
+        return ''.join(s)
+"""
+Solution 2:
+1. Address base cases. Use greedy approach of planting whenever you find a valid spot.
+2. Iterate through the flowerbed, check if there are plants to pot.
+3. See if neighboring spots are free.
+3. If yes, plant in the current spot by decreasing n by 1 and flipping flowerbed[i] to 1.
+4. If no, keep moving until you reach the end of the flowerbed.
+5. Address edge cases of first and last spot on the flowerbed inside your for loop.
+Time Complexity - O(n), Space Complexity - O(n)
+"""
+# Solution 2 with comments
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        vow = ""
+        # initialize vowels
+        vowels = {'a','A','e','E','i','I','o','O','u','U'}
+        # get all the vowels in the string
+        for c in s:
+            if c in vowels:
+                vow = vow+c
+        # initialize ptr to the last vowel in the string
+        ptr = len(vow) - 1
+        # make a list of characters in the string
+        s_list = list(s)
+        # for each character
+        for i in range(len(s)):
+            # if it is a vowel
+            if s_list[i] in vowels:
+                # replace it with reversed vowel
+                s_list[i] = vow[ptr]
+                # move ptr to the next reversed vowel
+                ptr -= 1
+        # compile the list into a string and return
+        return "".join(s_list)
